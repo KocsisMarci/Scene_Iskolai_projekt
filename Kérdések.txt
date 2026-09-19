@@ -1,0 +1,5 @@
+Kell -e mobilalkalmazás vagy elég csak asztali?
+Ha kell mobilalkalmazás android és IOS-re is kompatiblis kell legyen a mobilapp?
+Public, vagy private a GitHub repo?
+Mik azok a szempontok amik alapján lehet javítani a Git-en.
+Hogy lehet úgy priváttá tenni, hogy nekünk látható legyen, de másnak nem meg ilyenek?
