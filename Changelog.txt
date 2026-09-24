@@ -1,0 +1,16 @@
+Changelog
+1.1  2026-09-17
+	Adatbázis megalapozása, PPT megalapozása.
+
+     2026-09-19.
+	PPT befejezése, GitHub elkezdése.
+	
+     2026-09-24.
+	Kísérletezés az adatbázissal.
+		oracleapex workspace amit mindenki hozzá tud nyúlni és dolgozni benne 
+		(sajnos az sql nyelv nem biztos, hogy megfelelő lesz)
+
+		AIVEN létrejött egy felület, ahol mindhárman jelen vagyunk 
+		(itt már MYSQL a nyelv, viszont nem látjuk át a felüleletet.)
+
+	DBeaver 26.2.1?
