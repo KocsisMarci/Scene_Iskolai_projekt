@@ -1,0 +1,23 @@
+//Ezt a EventService.cs-be kell
+
+public string PostEvents() 
+{
+    cmd.Parameters.Clear();
+    conn.Open();
+
+    cmd.CommandText = "INSERT INTO events(Name, Description, Location, Latitude, Longitude, StartDate, EndDate, Category, CoverImageUrl, CreatedByUserId)\r\nVALUES(\r\n    'Budapest Tech Meetup',\r\n    'Kötetlen találkozó fejlesztőknek és tech iránt érdeklődőknek.',\r\n    'Müpa Budapest',\r\n    47.469430,\r\n    19.071010,\r\n    '2026-10-15 18:00:00',\r\n    '2026-10-15 21:00:00',\r\n    'Technology',\r\n    'https://example.com/images/tech-meetup.jpg',\r\n    1\r\n)";
+    MySqlDataReader reader = cmd.ExecuteReader();
+    conn.Close();
+    int soroK = cmd.ExecuteNonQuery();
+    if (soroK > 0)
+    {
+        return "Sikeres beszúrás!";
+    }
+    else
+    {
+        return "nem";
+    }
+    
+
+
+}
