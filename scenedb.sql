@@ -50,6 +50,134 @@ CREATE TABLE Events (
         ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+INSERT INTO Events
+    (Name, Description, Location, Latitude, Longitude, StartDate, EndDate, Category, CoverImageUrl, CreatedByUserId)
+VALUES
+(
+    'Budapest Tech Meetup',
+    'Kötetlen találkozó fejlesztőknek és tech iránt érdeklődőknek.',
+    'Müpa Budapest',
+    47.469430,
+    19.071010,
+    '2026-10-15 18:00:00',
+    '2026-10-15 21:00:00',
+    'Technology',
+    'https://example.com/images/tech-meetup.jpg',
+    1
+),
+(
+    'Őszi Street Food Fesztivál',
+    'Street food ételek, különleges italok és élő zene egész hétvégén.',
+    'Városliget',
+    47.514900,
+    19.077300,
+    '2026-10-17 11:00:00',
+    '2026-10-17 22:00:00',
+    'Food',
+    'https://example.com/images/street-food.jpg',
+    2
+),
+(
+    'Budapest Jazz Night',
+    'Élő jazz koncert a város szívében.',
+    'A38 Hajó',
+    47.471500,
+    19.062500,
+    '2026-10-20 20:00:00',
+    '2026-10-20 23:00:00',
+    'Music',
+    'https://example.com/images/jazz-night.jpg',
+    1
+),
+(
+    'Futóklub – Margitsziget',
+    'Közös esti futás kezdőknek és haladóknak. A táv körülbelül 7 km.',
+    'Margitsziget',
+    47.526900,
+    19.047900,
+    '2026-10-22 18:30:00',
+    '2026-10-22 20:00:00',
+    'Sport',
+    'https://example.com/images/running.jpg',
+    3
+),
+(
+    'Budapesti Fotóséta',
+    'Közös fotóséta Budapest történelmi belvárosában.',
+    'Deák Ferenc tér',
+    47.497900,
+    19.054900,
+    '2026-10-24 15:00:00',
+    '2026-10-24 18:00:00',
+    'Photography',
+    'https://example.com/images/photo-walk.jpg',
+    2
+),
+(
+    'Indie Game Developers Meetup',
+    'Független játékfejlesztők találkozója, előadásokkal és networkinggel.',
+    'Király utca 26.',
+    47.498600,
+    19.058800,
+    '2026-10-27 18:00:00',
+    '2026-10-27 21:30:00',
+    'Gaming',
+    'https://example.com/images/gamedev.jpg',
+    1
+),
+(
+    'Halloween Party 2026',
+    'Jelmezes Halloween party DJ-vel és különleges programokkal.',
+    'Akvárium Klub',
+    47.497200,
+    19.054300,
+    '2026-10-31 21:00:00',
+    '2026-11-01 03:00:00',
+    'Party',
+    'https://example.com/images/halloween.jpg',
+    3
+),
+(
+    'Kávékóstoló Workshop',
+    'Ismerkedés különböző specialty kávékkal és elkészítési módszerekkel.',
+    'Bartók Béla út',
+    47.478500,
+    19.047700,
+    '2026-11-03 17:30:00',
+    '2026-11-03 19:30:00',
+    'Workshop',
+    'https://example.com/images/coffee.jpg',
+    2
+),
+(
+    'Startup Networking Night',
+    'Startup alapítók, fejlesztők és befektetők találkozója.',
+    'Millenáris',
+    47.510100,
+    19.025900,
+    '2026-11-05 18:00:00',
+    '2026-11-05 22:00:00',
+    'Business',
+    'https://example.com/images/startup.jpg',
+    1
+),
+(
+    'Őszi Könyvklub',
+    'Havi könyvklub beszélgetés, ezúttal kortárs magyar regényekről.',
+    'Fővárosi Szabó Ervin Könyvtár',
+    47.488900,
+    19.065300,
+    '2026-11-08 16:00:00',
+    '2026-11-08 18:00:00',
+    'Culture',
+    'https://example.com/images/bookclub.jpg',
+    3
+);
+
+
+
+
+
 -- =========================================================
 -- ARTISTS
 -- =========================================================
