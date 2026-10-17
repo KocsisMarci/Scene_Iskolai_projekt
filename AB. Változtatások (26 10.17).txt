@@ -1,0 +1,6 @@
+Változtatások:
+Adatbázis
+
+Artists táblában
+
+Genre VARCHAR(100) helyet, Genre enum ( de set is lehetne)
