@@ -184,10 +184,11 @@ VALUES
 CREATE TABLE Artists (
     ArtistId        INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Name            VARCHAR(150) NOT NULL,
-    Genre           VARCHAR(100),
+    /*Genre           VARCHAR(100), ehelyett én most egy enumot képzelnék el*/ 
     Bio             TEXT,
     ImageUrl        VARCHAR(255),
-    SocialLinks     VARCHAR(500)   -- pl. JSON string vagy vesszovel elvalasztott linkek
+    SocialLinks     VARCHAR(500)   -- pl. JSON string vagy vesszovel elvalasztott linkek,
+    Genre ENUM('Musician', 'DJ', 'Dancer', 'Comedian', 'Magician', 'Speaker', 'Organization', 'AnimalShow', 'Workshop', 'Other') NOT NULL DEFAULT 'other;
 ) ENGINE=InnoDB;
 
 -- =========================================================
