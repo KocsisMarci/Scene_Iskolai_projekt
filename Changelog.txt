@@ -17,3 +17,9 @@ Changelog
 
 	2026.10.08 
 			Backend struktúra  elkezdése - MŰKÖDDŐ Ancestor osztállyal ami megvalósítája a MySqlConnection()-t, meg a cmd-t egységesen.
+
+	2026.10.17
+			Backend struktúra folytatása - Models mappában néhány osztály (pl Artists) 
+										 - Services mappában néhány Service (pl Artists)
+										 - A jelek szerint az ArtistService működik is jól.
+										 - Adatbázis, adatbázis dump módosítás.
