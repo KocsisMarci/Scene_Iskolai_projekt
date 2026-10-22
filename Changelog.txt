@@ -23,3 +23,8 @@ Changelog
 										 - Services mappában néhány Service (pl Artists)
 										 - A jelek szerint az ArtistService működik is jól.
 										 - Adatbázis, adatbázis dump módosítás.
+
+
+	2026.10.22
+		Frontend REACT struktúra megalapozása (drivera feltöltve, több tanárral megosztva ).
+		Adatbázis  frissítés (Scene_1.2 DB.sql).
