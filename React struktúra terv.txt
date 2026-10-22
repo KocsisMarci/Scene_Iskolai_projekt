@@ -1,0 +1,16 @@
+src/
+├── api/
+│   └── axiosInstance.js       # API kliens (JWT kezelés)
+├── components/
+│   ├── Navbar.jsx             # Fejléc (Profil, XP, Szint kijelző)
+│   ├── EventCard.jsx          # Esemény kártya komponens
+│   └── ProtectedRoute.jsx     # Védett útvonalak
+├── context/
+│   └── AuthContext.jsx        # Bejelentkezett User, Token és XP állapotkezelő
+├── pages/
+│   ├── EventsPage.jsx         # Események böngészése, szűrése
+│   ├── EventDetailPage.jsx    # Esemény részletei (Fellépők, Árusok, Értékelések)
+│   ├── ProfilePage.jsx        # Felhasználó avatárja, XP történet, saját feltöltések
+│   └── LoginPage.jsx          # Bejelentkezés
+├── App.jsx                    # Navigáció (React Router)
+└── main.jsx
