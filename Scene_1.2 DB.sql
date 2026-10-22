@@ -1,124 +1,207 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Gép: 127.0.0.1
--- Létrehozás ideje: 2026. Okt 22. 11:06
--- Kiszolgáló verziója: 10.4.32-MariaDB
--- PHP verzió: 8.2.12
+-- =========================================================
+-- SCENE - adatbázis séma (Javított & Bővített)
+-- MySQL 8.0+ / InnoDB / utf8mb4
+-- =========================================================
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+CREATE DATABASE IF NOT EXISTS scene_db
+    CHARACTER SET utf8mb4
+    COLLATE utf8mb4_unicode_ci;
 
+USE scene_db;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+-- =========================================================
+-- USERS
+-- =========================================================
+CREATE TABLE Users (
+    UserId          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Username        VARCHAR(50)  NOT NULL UNIQUE,
+    Email           VARCHAR(150) NOT NULL UNIQUE,
+    PasswordHash    VARCHAR(255) NOT NULL,
+    DisplayName     VARCHAR(100),
+    AvatarLevel     INT UNSIGNED NOT NULL DEFAULT 1,
+    CurrentXP       INT UNSIGNED NOT NULL DEFAULT 0,
+    AvatarImageUrl  VARCHAR(255),
+    Bio             VARCHAR(500),
+    Role            ENUM('User','Admin') NOT NULL DEFAULT 'User',
+    IsActive        TINYINT(1) NOT NULL DEFAULT 1,
+    CreatedAt       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+                        ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
 
---
--- Adatbázis: `fesztival`
---
-CREATE DATABASE IF NOT EXISTS `fesztival` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci;
-USE `fesztival`;
+-- =========================================================
+-- EVENTS
+-- =========================================================
+CREATE TABLE Events (
+    EventId         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Name            VARCHAR(150) NOT NULL,
+    Description     TEXT,
+    Location        VARCHAR(255),
+    Latitude        DECIMAL(9,6),
+    Longitude       DECIMAL(9,6),
+    StartDate       DATETIME NOT NULL,
+    EndDate         DATETIME NOT NULL,
+    Category        VARCHAR(50),
+    CoverImageUrl   VARCHAR(255),
+    MaxCapacity     INT UNSIGNED DEFAULT NULL, -- NULL = korlátlan
+    Status          ENUM('Published', 'Draft', 'Cancelled') NOT NULL DEFAULT 'Published',
+    CreatedByUserId INT UNSIGNED,
+    CreatedAt       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UpdatedAt       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP 
+                        ON UPDATE CURRENT_TIMESTAMP,
 
--- --------------------------------------------------------
+    CONSTRAINT fk_Events_CreatedBy
+        FOREIGN KEY (CreatedByUserId) REFERENCES Users(UserId)
+        ON DELETE SET NULL
+) ENGINE=InnoDB;
 
---
--- Tábla szerkezet ehhez a táblához `latogato`
---
+-- =========================================================
+-- ARTISTS
+-- =========================================================
+CREATE TABLE Artists (
+    ArtistId        INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Name            VARCHAR(150) NOT NULL,
+    Bio             TEXT,
+    ImageUrl        VARCHAR(255),
+    SocialLinks     JSON DEFAULT NULL,
+    Genre           ENUM('Musician', 'DJ', 'Dancer', 'Comedian', 'Magician', 'Speaker', 'Organization', 'AnimalShow', 'Workshop', 'Other') NOT NULL DEFAULT 'Other'
+) ENGINE=InnoDB;
 
-DROP TABLE IF EXISTS `latogato`;
-CREATE TABLE `latogato` (
-  `id` int(11) NOT NULL,
-  `felhasznaloNev` varchar(100) NOT NULL,
-  `nev` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `nem` enum('férfi','nő','x','egyéb') NOT NULL,
-  `lakcim` varchar(200) NOT NULL,
-  `szuletesi_datum` date NOT NULL,
-  `telefonszam` varchar(25) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+-- =========================================================
+-- VENDORS
+-- =========================================================
+CREATE TABLE Vendors (
+    VendorId        INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    Name            VARCHAR(150) NOT NULL,
+    VendorType      VARCHAR(50),
+    Description     TEXT,
+    ContactEmail    VARCHAR(150),
+    ContactPhone    VARCHAR(30),
+    ImageUrl        VARCHAR(255)
+) ENGINE=InnoDB;
 
--- --------------------------------------------------------
+-- =========================================================
+-- PERFORMANCES
+-- =========================================================
+CREATE TABLE Performances (
+    PerformanceId   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    EventId         INT UNSIGNED NOT NULL,
+    ArtistId        INT UNSIGNED NOT NULL,
+    StageName       VARCHAR(100),
+    StartTime       DATETIME NOT NULL,
+    EndTime         DATETIME NOT NULL,
 
---
--- Tábla szerkezet ehhez a táblához `rendezveny`
---
+    CONSTRAINT fk_Performances_Event
+        FOREIGN KEY (EventId) REFERENCES Events(EventId)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_Performances_Artist
+        FOREIGN KEY (ArtistId) REFERENCES Artists(ArtistId)
+        ON DELETE CASCADE,
 
-DROP TABLE IF EXISTS `rendezveny`;
-CREATE TABLE `rendezveny` (
-  `id` int(11) NOT NULL,
-  `nev` varchar(100) NOT NULL,
-  `hely` varchar(100) NOT NULL,
-  `kezdesi_ido` datetime NOT NULL,
-  `vegzesi_ido` datetime NOT NULL,
-  `ferohely` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci COMMENT='Lehet, hogy ez nem tábla, hanem adatbázis kell legyen';
+    UNIQUE KEY uq_Performance (EventId, ArtistId, StartTime)
+) ENGINE=InnoDB;
 
--- --------------------------------------------------------
+-- =========================================================
+-- BOOKINGS
+-- =========================================================
+CREATE TABLE Bookings (
+    BookingId       INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    UserId          INT UNSIGNED NOT NULL,
+    EventId         INT UNSIGNED NOT NULL,
+    Status          ENUM('Interested','Going','Cancelled') NOT NULL DEFAULT 'Interested',
+    CreatedAt       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
---
--- Tábla szerkezet ehhez a táblához `rendezvenyszervezo`
---
+    CONSTRAINT fk_Bookings_User
+        FOREIGN KEY (UserId) REFERENCES Users(UserId)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_Bookings_Event
+        FOREIGN KEY (EventId) REFERENCES Events(EventId)
+        ON DELETE CASCADE,
 
-DROP TABLE IF EXISTS `rendezvenyszervezo`;
-CREATE TABLE `rendezvenyszervezo` (
-  `id` int(11) NOT NULL,
-  `felhasznaloNev` varchar(100) NOT NULL,
-  `nev` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `telefonszam` varchar(25) NOT NULL,
-  `korzetSzam` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+    UNIQUE KEY uq_Booking (UserId, EventId)
+) ENGINE=InnoDB;
 
---
--- Indexek a kiírt táblákhoz
---
+-- =========================================================
+-- EVENTVENDORS
+-- =========================================================
+CREATE TABLE EventVendors (
+    EventId         INT UNSIGNED NOT NULL,
+    VendorId        INT UNSIGNED NOT NULL,
+    SpotLabel       VARCHAR(50),
 
---
--- A tábla indexei `latogato`
---
-ALTER TABLE `latogato`
-  ADD PRIMARY KEY (`id`);
+    PRIMARY KEY (EventId, VendorId),
 
---
--- A tábla indexei `rendezveny`
---
-ALTER TABLE `rendezveny`
-  ADD PRIMARY KEY (`id`);
+    CONSTRAINT fk_EventVendors_Event
+        FOREIGN KEY (EventId) REFERENCES Events(EventId)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_EventVendors_Vendor
+        FOREIGN KEY (VendorId) REFERENCES Vendors(VendorId)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
 
---
--- A tábla indexei `rendezvenyszervezo`
---
-ALTER TABLE `rendezvenyszervezo`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `email` (`email`,`telefonszam`);
+-- =========================================================
+-- EVENTPHOTOS
+-- =========================================================
+CREATE TABLE EventPhotos (
+    PhotoId         INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    UserId          INT UNSIGNED NOT NULL,
+    EventId         INT UNSIGNED NOT NULL,
+    ImageUrl        VARCHAR(255) NOT NULL,
+    XPAwarded       INT UNSIGNED NOT NULL DEFAULT 0,
+    Status          ENUM('Pending','Approved','Rejected') NOT NULL DEFAULT 'Pending',
+    UploadedAt      DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
---
--- A kiírt táblák AUTO_INCREMENT értéke
---
+    CONSTRAINT fk_EventPhotos_User
+        FOREIGN KEY (UserId) REFERENCES Users(UserId)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_EventPhotos_Event
+        FOREIGN KEY (EventId) REFERENCES Events(EventId)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
 
---
--- AUTO_INCREMENT a táblához `latogato`
---
-ALTER TABLE `latogato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+-- =========================================================
+-- XPTRANSACTIONS
+-- =========================================================
+CREATE TABLE XPTransactions (
+    TransactionId   INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    UserId          INT UNSIGNED NOT NULL,
+    Amount          INT NOT NULL,
+    Reason          VARCHAR(100) NOT NULL,
+    ReferenceId     INT UNSIGNED DEFAULT NULL,
+    CreatedAt       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
---
--- AUTO_INCREMENT a táblához `rendezveny`
---
-ALTER TABLE `rendezveny`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+    CONSTRAINT fk_XPTransactions_User
+        FOREIGN KEY (UserId) REFERENCES Users(UserId)
+        ON DELETE CASCADE
+) ENGINE=InnoDB;
 
---
--- AUTO_INCREMENT a táblához `rendezvenyszervezo`
---
-ALTER TABLE `rendezvenyszervezo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-COMMIT;
+-- =========================================================
+-- EVENTREVIEWS (Visszajelzések & Értékelések)
+-- =========================================================
+CREATE TABLE EventReviews (
+    ReviewId        INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    EventId         INT UNSIGNED NOT NULL,
+    UserId          INT UNSIGNED NOT NULL,
+    Rating          TINYINT UNSIGNED NOT NULL CHECK (Rating BETWEEN 1 AND 5),
+    Comment         TEXT,
+    CreatedAt       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+    CONSTRAINT fk_Reviews_Event
+        FOREIGN KEY (EventId) REFERENCES Events(EventId)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_Reviews_User
+        FOREIGN KEY (UserId) REFERENCES Users(UserId)
+        ON DELETE CASCADE,
+
+    UNIQUE KEY uq_User_Event_Review (EventId, UserId)
+) ENGINE=InnoDB;
+
+-- =========================================================
+-- INDEXEK
+-- =========================================================
+CREATE INDEX idx_Events_StartDate ON Events(StartDate);
+CREATE INDEX idx_Events_Category ON Events(Category);
+CREATE INDEX idx_Bookings_UserId ON Bookings(UserId);
+CREATE INDEX idx_Bookings_EventId ON Bookings(EventId);
+CREATE INDEX idx_EventPhotos_EventId ON EventPhotos(EventId);
+CREATE INDEX idx_XPTransactions_UserId ON XPTransactions(UserId);
