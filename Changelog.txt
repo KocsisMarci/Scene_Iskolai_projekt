@@ -1,11 +1,11 @@
 Changelog
-1.1  2026-09-17
+1.1  2026.09.17
 	Adatbázis megalapozása, PPT megalapozása.
 
-     2026-09-19.
+     2026.09.19.
 	PPT befejezése, GitHub elkezdése.
 	
-     2026-09-24.
+     2026.09.24.
 	Kísérletezés az adatbázissal.
 		oracleapex workspace amit mindenki hozzá tud nyúlni és dolgozni benne 
 		(sajnos az sql nyelv nem biztos, hogy megfelelő lesz)
@@ -28,3 +28,6 @@ Changelog
 	2026.10.22
 		Frontend REACT struktúra megalapozása (drivera feltöltve, több tanárral megosztva ).
 		Adatbázis  frissítés (Scene_1.2 DB.sql).
+
+	2026.10.28 
+		Kész FRONTEND REACT alapstruktúra GitHubra feltöltve.
