@@ -1,0 +1,2 @@
+FONTOS:
+Gemini szerint ez nem WPF hanem ASP .NET CORE WEB API projekt, ugye amit backenden is mondott Sike.

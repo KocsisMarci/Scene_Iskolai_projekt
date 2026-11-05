@@ -1,0 +1,22 @@
+WPF infók:
+
+Nuget packagesek:
+System.Net.Http.Json (8.0.1)
+
+CommunityToolkit.Mvvm (8.4.2)
+
+
+Pótolnom kellett egy ConnectionStringet, az appsettings.jsonban, az AllowedHosts:"*" előtt találjátok.
+"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost; Port=3306; Database=scene_db; user=root; password=; SslMode=None;"
+},
+
+A program.cs-ben
+
+builder.Services.AddControllers() elé
+
+
+builder.Services.AddDbContext<SceneContext>(options => {
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
