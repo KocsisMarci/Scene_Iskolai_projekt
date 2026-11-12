@@ -37,3 +37,6 @@ Changelog
 
 	2026.11.05
 		Admin felület elkezdése bejelentkezéssel, trellózás, Excel munkafüzeten való munkálatok.
+
+	2026.11.12	Admin felület befejezése, optimalizálása login update miatt hibás de amúgy működött					
+	    Adatbázis refreshtokens tábla létrehozása a működő loginhoz					
