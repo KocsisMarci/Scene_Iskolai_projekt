@@ -23,8 +23,6 @@ Changelog
 										 - Services mappában néhány Service (pl Artists)
 										 - A jelek szerint az ArtistService működik is jól.
 										 - Adatbázis, adatbázis dump módosítás.
-
-
 	2026.10.22
 		Frontend REACT struktúra megalapozása (drivera feltöltve, több tanárral megosztva ).
 		Adatbázis  frissítés (Scene_1.2 DB.sql).
@@ -41,3 +39,4 @@ Changelog
 	2026.11.12	Admin felület befejezése, optimalizálása login update miatt hibás de amúgy működött					
 	    Adatbázis refreshtokens tábla létrehozása a működő loginhoz	(scene_db 1.4)
 
+   2026.11.19 Csapatépítő esemény: szalagavató		
